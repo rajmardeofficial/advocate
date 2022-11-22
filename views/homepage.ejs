@@ -53,8 +53,13 @@
               <!-- <a href="#resources">Resources</a> -->
             </div>
             <div class="nav-buttons">
+              <% if(locals.isLoggedIn){ %>
+              <h3><%= locals.name %></h3>
+              <a href="/logout" class="log-in">Logout</a>
+              <% } else { %>
               <a href="/login" class="log-in">Login</a>
               <a href="/login" class="sign-up btn btn-sm">Sign Up</a>
+              <% } %>
             </div>
           </nav>
           <div class="burger-menu">
@@ -150,20 +155,20 @@
         </div>
       </section>
       <!-- Footer -->
-      <footer class="footer" id="resources">
-        <div class="container">
+      <!-- <footer class="footer" id="resources">
+        <div class="container"> -->
           <!-- Website Logo -->
-          <div class="logo">
-            <a href="#">
+          <!-- <div class="logo">
+            <a href="#"> -->
               <!-- <img
                 src="https://raw.githubusercontent.com/MohamedAridah/frontendmentor_url-shortening-api/main/images/logo.svg"
                 alt=""
               /> -->
-              <h1>Advocate</h1>
+              <!-- <h1>Advocate</h1>
             </a>
-          </div>
+          </div> -->
           <!-- Quick Links -->
-          <div class="quick-links">
+          <!-- <div class="quick-links">
             <div class="links-group">
               <span>Features</span>
               <div>
@@ -189,9 +194,9 @@
                 <a href="#">Contact</a>
               </div>
             </div>
-          </div>
+          </div> -->
           <!-- Social Media -->
-          <div class="social-media">
+          <!-- <div class="social-media">
             <a href="#">
               <img
                 src="https://raw.githubusercontent.com/MohamedAridah/frontendmentor_url-shortening-api/main/images/icon-facebook.svg"
@@ -217,9 +222,9 @@
               />
             </a>
           </div>
-        </div>
+        </div> -->
         <!-- Made By -->
-        <div class="attribution">
+        <!-- <div class="attribution">
           Challenge by
           <a
             href="https://www.frontendmentor.io?ref=challenge"
@@ -250,7 +255,7 @@
             </li>
           </ul>
         </div>
-      </footer>
+      </footer> -->
     </main>
     <script src="js/script.js"></script>
   </body>

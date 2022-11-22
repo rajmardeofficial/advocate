@@ -1,13 +1,37 @@
 const express = require("express");
 const session = require("express-session");
-const app = express();
 const mongoose = require("mongoose");
 const port = process.env.PORT || 3000;
+const app = express();
+
+app.use(
+  session({
+    secret: "keyboard cat",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+
+app.use((req, res, next) => {
+  if (req.session.email === undefined) {
+    res.locals.isLoggedIn = false;
+  } else {
+    res.locals.name = req.session.name;
+    // res.locals.dp = req.session.dp;
+    res.locals.email = req.session.email;
+    // res.locals.phone = req.session.phone;
+    res.locals.isLoggedIn = true;
+  }
+
+  console.log(req.session);
+
+  next();
+});
 
 // Mongodb connection url
 mongoose.connect("mongodb://localhost:27017/advocate", {
@@ -29,32 +53,6 @@ const userSchema = new mongoose.Schema({
 const feedbackData = mongoose.model("feedbackData", feedbackSchema);
 const siteUsers = mongoose.model("siteUsers", userSchema);
 
-app.use((req, res, next) => {
-  // if (req.session.email === undefined) {
-  //   req.lolcas.name == "Guest";
-  //   res.locals.isLoggedIn = false;
-
-  // } else {
-  //   res.locals.name = req.session.name;
-  //   // res.locals.dp = req.session.dp;
-  //   res.locals.email = req.session.email;
-  //   // res.locals.phone = req.session.phone;
-  //   res.locals.isLoggedIn = true;
-  // }
-
-  console.log(req.session);
-
-  next();
-});
-
-app.use(
-  session({
-    secret: "keyboard cat",
-    resave: false,
-    saveUninitialized: false,
-  })
-);
-
 app.get("/login", (req, res) => {
   res.render("register", { errors: [] });
 });
@@ -67,9 +65,11 @@ app.post("/login", (req, res) => {
       console.log(err);
     } else {
       if (results) {
+        console.log(results);
         if (results.password === password) {
           req.session.email = results.email;
           req.session.name = results.name;
+          // console.log(req.session);
           res.redirect("/");
         } else {
           errors.push("Password does not match !");
@@ -82,8 +82,6 @@ app.post("/login", (req, res) => {
 
 app.post("/register", (req, res) => {
   const { name, password, phone, email } = req.body;
-
-  console.log(req.body);
 
   const errors = [];
 
@@ -162,8 +160,13 @@ app.get(
 );
 
 app.get("/logout", (req, res) => {
-  req.session.destroy();
-  res.redirect("/admin");
+  req.session.destroy((err) => {
+    if (err) {
+      res.redirect("/");
+    } else {
+      res.redirect("/");
+    }
+  });
 });
 
 app.listen(3000, "0.0.0.0", () =>
