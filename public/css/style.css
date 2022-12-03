@@ -338,6 +338,10 @@ img {
   right: -70px;
 }
 
+.landing-image img{
+  border-radius: 300px;
+}
+
 @media (max-width: 992px) {
   .landing .landing-image {
     flex-basis: initial;
@@ -703,6 +707,10 @@ img {
   height: 65px;
   background: #3b3054;
   border-radius: 50%;
+}
+
+.feature-illustration img{
+  height: 59px;
 }
 
 @media (max-width: 666px) {
